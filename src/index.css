@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-primary: #4F46E5;
+  --color-primary-dark: #4338CA;
+  --color-secondary: #06B6D4;
+  --color-dark-bg: #0F172A;
+  --color-dark-card: #1E293B;
+  --color-accent: #8B5CF6;
+}
+
+@layer utilities {
+  .glassmorphism {
+    @apply bg-white/10 backdrop-blur-md border border-white/20 shadow-xl;
+  }
+  
+  .glassmorphism-dark {
+    @apply bg-gray-900/40 backdrop-blur-md border border-gray-700/50 shadow-2xl;
+  }
+  
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500;
+  }
+  
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+  100% { transform: translateY(0px); }
+}
+
+body {
+  @apply bg-gray-50 text-gray-900 dark:bg-slate-900 dark:text-gray-100 antialiased font-sans transition-colors duration-300;
+}
+
+#root {
+  @apply min-h-screen flex flex-col w-full;
+}
