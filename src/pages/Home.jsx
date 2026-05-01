@@ -57,6 +57,44 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Timeline Section */}
+      <section className="max-w-4xl mx-auto px-4">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl font-bold mb-4 dark:text-white">Indian Electoral Journey</h2>
+          <p className="text-gray-600 dark:text-gray-400">Milestones of the world's largest democracy.</p>
+        </div>
+        
+        <div className="relative border-l-4 border-indigo-200 dark:border-indigo-800 ml-4 md:ml-1/2">
+          {[
+            { year: "1950", title: "Election Commission Established", desc: "The Election Commission of India was formed on 25th January 1950." },
+            { year: "1951-52", title: "First General Elections", desc: "Over 173 million voters participated in the first democratic elections." },
+            { year: "1989", title: "Voting Age Reduced", desc: "The voting age was lowered from 21 to 18 years, empowering the youth." },
+            { year: "1998", title: "Introduction of EVMs", desc: "Electronic Voting Machines were used for the first time on an experimental basis." },
+            { year: "2013", title: "NOTA & VVPAT", desc: "Introduction of 'None of the Above' option and Voter Verifiable Paper Audit Trail." }
+          ].map((item, idx) => (
+            <motion.div 
+              key={idx}
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.1 }}
+              className="mb-10 ml-8 relative"
+            >
+              <span className="absolute -left-11 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-indigo-600 text-white ring-4 ring-white dark:ring-slate-900">
+                <div className="h-2 w-2 rounded-full bg-white"></div>
+              </span>
+              <h3 className="flex items-center mb-1 text-lg font-bold text-gray-900 dark:text-white">
+                {item.title} 
+                <span className="bg-indigo-100 text-indigo-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-indigo-900 dark:text-indigo-300 ml-3">
+                  {item.year}
+                </span>
+              </h3>
+              <p className="text-base font-normal text-gray-500 dark:text-gray-400">{item.desc}</p>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
       {/* Features Grid */}
       <section className="max-w-6xl mx-auto px-4">
         <div className="text-center mb-16">

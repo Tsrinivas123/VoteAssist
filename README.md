@@ -9,7 +9,8 @@ VoteAssist is a modern, gamified, and highly interactive web application designe
 - **Interactive Citizen Dashboard**: A personalized portal featuring a digital Elector's Photo Identity Card (EPIC), upcoming election countdowns, and application tracking.
 - **EVM Voting Simulation**: Experience the exact voting procedure using a virtual Electronic Voting Machine (EVM).
 - **AI-Powered Chatbot**: Get instant answers about eligibility, Form 6 registration, and polling booth details through our context-aware keyword matching assistant.
-- **Gamified Learning**: Engage with flashcards and quizzes to learn about the Indian Constitution and Election Commission of India.
+- **Gamified Learning (Masterclass)**: Engage with highly interactive, animated flashcards and quizzes to learn about the Indian Constitution.
+- **Indian Electoral Timeline**: Explore a beautiful historical timeline documenting the journey of the world's largest democracy.
 - **Multilingual Support**: Seamlessly switch between English and Hindi for maximum accessibility.
 - **Fake News Shield**: Educational module teaching citizens how to spot and verify misinformation circulating on WhatsApp and social media.
 - **Polling Booth Finder**: Locate your exact polling station and Booth Level Officer (BLO) details using your EPIC number.
