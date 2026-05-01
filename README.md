@@ -6,14 +6,14 @@ VoteAssist is a modern, gamified, and highly interactive web application designe
 
 ## 🌟 Key Features
 
-- **Interactive Citizen Dashboard**: A personalized portal featuring a digital Elector's Photo Identity Card (EPIC), upcoming election countdowns, and application tracking.
-- **EVM Voting Simulation**: Experience the exact voting procedure using a virtual Electronic Voting Machine (EVM).
-- **AI-Powered Chatbot**: Get instant answers about eligibility, Form 6 registration, and polling booth details through our context-aware keyword matching assistant.
+- **Smart Eligibility Checker**: API-powered form that dynamically calculates voting eligibility based on user age and citizenship, providing instant next-step recommendations.
+- **Personalized Citizen Dashboard**: A dynamic portal where users generate their own digital Elector's Photo Identity Card (EPIC) by inputting their details, alongside real-time application tracking and gamified "Readiness Scores."
+- **Enhanced EVM Voting Simulation**: A highly realistic 5-step interactive simulation of the Indian voting process, featuring ID verification, indelible ink application, working candidate buttons, and VVPAT printing animations.
+- **Context-Aware AI Chatbot**: An intelligent floating assistant equipped with quick-reply suggestions, auto-scrolling, and intelligent keyword matching to guide users through registration and voting FAQs.
 - **Gamified Learning (Masterclass)**: Engage with highly interactive, animated flashcards and quizzes to learn about the Indian Constitution.
 - **Indian Electoral Timeline**: Explore a beautiful historical timeline documenting the journey of the world's largest democracy.
 - **Multilingual Support**: Seamlessly switch between English and Hindi for maximum accessibility.
 - **Fake News Shield**: Educational module teaching citizens how to spot and verify misinformation circulating on WhatsApp and social media.
-- **Polling Booth Finder**: Locate your exact polling station and Booth Level Officer (BLO) details using your EPIC number.
 
 ---
 
