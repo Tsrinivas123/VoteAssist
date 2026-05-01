@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { CheckCircle2, Circle, Trophy, BookOpen, Target, CreditCard, Calendar, MapPin, User, FileText, AlertCircle, Clock } from 'lucide-react';
 
 export default function Dashboard() {
@@ -196,10 +197,10 @@ export default function Dashboard() {
               <h2 className="text-xl font-bold dark:text-white">Track Applications</h2>
               <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">Status of your submitted forms and requests</p>
             </div>
-            <button className="px-4 py-2 bg-indigo-600 text-white rounded-xl text-sm font-bold shadow-sm hover:bg-indigo-700 transition-colors flex items-center gap-2">
+            <Link to="/registration" className="px-4 py-2 bg-indigo-600 text-white rounded-xl text-sm font-bold shadow-sm hover:bg-indigo-700 transition-colors flex items-center gap-2">
               <FileText size={16} />
               New Form
-            </button>
+            </Link>
           </div>
           
           <div className="divide-y divide-gray-100 dark:divide-gray-700">

@@ -131,3 +131,32 @@ gcloud run deploy vote-assist \
   --region us-central1 \
   --allow-unauthenticated
 ```
+
+---
+
+## 🔧 Secure Node.js Backend
+
+A newly added secure backend powered by Node.js, Express, and Zod handles API routing and logic.
+
+### Local Backend Setup
+
+1. Navigate to the backend directory:
+   ```bash
+   cd backend
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Run the Jest unit test suite:
+   ```bash
+   npm test
+   ```
+4. Start the server (runs on `http://localhost:8080`):
+   ```bash
+   node src/index.js
+   ```
+
+### 🌐 Live URLs
+- **Frontend (Citizen Portal)**: [https://vote-assist-143983638275.asia-south1.run.app](https://vote-assist-143983638275.asia-south1.run.app)
+- **Backend (Secure API)**: [http://localhost:8080/api/eligibility](http://localhost:8080/api/eligibility)
