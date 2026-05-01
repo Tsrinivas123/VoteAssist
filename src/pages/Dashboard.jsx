@@ -1,28 +1,26 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { CheckCircle2, Trophy, CreditCard, Calendar, MapPin, User, FileText, Clock, Shield } from 'lucide-react';
+import { CheckCircle2, Trophy, CreditCard, Calendar, MapPin, User, FileText, Clock, Shield, ExternalLink, ShieldAlert } from 'lucide-react';
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState('overview');
   const [hasSetupProfile, setHasSetupProfile] = useState(false);
   
-  // Dynamic User Input State
+  // Dynamic User Input State without fake defaults
   const [voterDetails, setVoterDetails] = useState({
     name: "",
     epicNo: "",
     age: "",
     gender: "Male",
-    constituency: "New Delhi (ND-01)",
-    partNo: "45",
-    serialNo: "312",
-    pollingStation: "Govt. Senior Secondary School, Sector 14, Room 4",
+    state: "",
+    constituency: "",
     status: "Active"
   });
 
   const handleProfileSetup = (e) => {
     e.preventDefault();
-    if(voterDetails.name && voterDetails.epicNo && voterDetails.age) {
+    if(voterDetails.name && voterDetails.epicNo && voterDetails.age && voterDetails.state && voterDetails.constituency) {
       setHasSetupProfile(true);
     }
   };
@@ -50,7 +48,7 @@ export default function Dashboard() {
             <Shield size={36} />
           </div>
           <h1 className="text-3xl font-extrabold mb-4 dark:text-white">Setup Your Profile</h1>
-          <p className="text-gray-600 dark:text-gray-400 mb-8">Enter your details to generate your personalized digital voter dashboard.</p>
+          <p className="text-gray-600 dark:text-gray-400 mb-8">Enter your details to generate your personalized digital voter dashboard. Your privacy is protected.</p>
           
           <form onSubmit={handleProfileSetup} className="space-y-5 text-left">
             <div>
@@ -75,9 +73,23 @@ export default function Dashboard() {
                 </select>
               </div>
             </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">State</label>
+                <input required type="text" value={voterDetails.state} onChange={e => setVoterDetails({...voterDetails, state: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-slate-900 focus:ring-2 focus:ring-indigo-500 outline-none dark:text-white" placeholder="e.g. Delhi" />
+              </div>
+              <div>
+                <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Constituency</label>
+                <input required type="text" value={voterDetails.constituency} onChange={e => setVoterDetails({...voterDetails, constituency: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-slate-900 focus:ring-2 focus:ring-indigo-500 outline-none dark:text-white" placeholder="e.g. New Delhi" />
+              </div>
+            </div>
             <button type="submit" className="w-full py-4 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 transition-all shadow-md mt-4">
-              Generate Digital ID
+              Generate Digital Profile
             </button>
+            <div className="flex items-center justify-center gap-2 mt-4 text-xs text-gray-500 dark:text-gray-400">
+              <ShieldAlert size={14} />
+              <span>We do not access or store real voter data.</span>
+            </div>
           </form>
         </motion.div>
       </div>
@@ -85,58 +97,64 @@ export default function Dashboard() {
   }
 
   const renderDigitalID = () => (
-    <motion.div 
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      className="bg-gradient-to-br from-indigo-600 via-indigo-700 to-purple-800 rounded-3xl p-6 md:p-8 shadow-2xl text-white relative overflow-hidden border border-indigo-400/30"
-    >
-      <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full -translate-y-1/2 translate-x-1/3"></div>
-      
-      <div className="flex justify-between items-start mb-8">
-        <div className="flex items-center gap-4">
-          <div className="p-3 bg-white/20 rounded-xl backdrop-blur-md">
-            <CreditCard size={28} />
+    <div className="space-y-3">
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="bg-gradient-to-br from-indigo-600 via-indigo-700 to-purple-800 rounded-3xl p-6 md:p-8 shadow-2xl text-white relative overflow-hidden border border-indigo-400/30"
+      >
+        <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full -translate-y-1/2 translate-x-1/3"></div>
+        
+        <div className="flex justify-between items-start mb-8 relative z-10">
+          <div className="flex items-center gap-4">
+            <div className="p-3 bg-white/20 rounded-xl backdrop-blur-md">
+              <CreditCard size={28} />
+            </div>
+            <div>
+              <h3 className="font-bold text-xl uppercase tracking-wider">Digital Voter Profile (Demo)</h3>
+              <p className="text-indigo-200 text-xs uppercase tracking-widest mt-1">Simulated Election Application</p>
+            </div>
           </div>
-          <div>
-            <h3 className="font-bold text-xl uppercase tracking-wider">Elector's Photo Identity Card</h3>
-            <p className="text-indigo-200 text-xs uppercase tracking-widest mt-1">Election Commission of India</p>
+          <div className="bg-green-500/20 px-4 py-1.5 rounded-full text-xs font-bold uppercase backdrop-blur-md border border-green-400/30 text-green-100 flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+            {voterDetails.status}
           </div>
-        </div>
-        <div className="bg-green-500/20 px-4 py-1.5 rounded-full text-xs font-bold uppercase backdrop-blur-md border border-green-400/30 text-green-100 flex items-center gap-1.5">
-          <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
-          {voterDetails.status}
-        </div>
-      </div>
-      
-      <div className="flex flex-col md:flex-row gap-8 items-center md:items-start">
-        <div className="w-32 h-40 bg-indigo-900/50 rounded-2xl border-2 border-white/20 flex items-center justify-center overflow-hidden shrink-0 shadow-inner">
-          <User size={64} className="text-indigo-300 opacity-50" />
         </div>
         
-        <div className="flex-1 grid grid-cols-2 gap-y-6 gap-x-4 text-sm w-full">
-          <div>
-            <p className="text-indigo-200 text-xs uppercase tracking-wider mb-1">Elector Name</p>
-            <p className="font-bold text-lg">{voterDetails.name}</p>
+        <div className="flex flex-col md:flex-row gap-8 items-center md:items-start relative z-10">
+          <div className="w-32 h-40 bg-indigo-900/50 rounded-2xl border-2 border-white/20 flex items-center justify-center overflow-hidden shrink-0 shadow-inner">
+            <User size={64} className="text-indigo-300 opacity-50" />
           </div>
-          <div>
-            <p className="text-indigo-200 text-xs uppercase tracking-wider mb-1">EPIC No.</p>
-            <p className="font-mono font-bold text-lg bg-black/20 inline-block px-3 py-1 rounded-lg border border-white/10">{voterDetails.epicNo}</p>
-          </div>
-          <div>
-            <p className="text-indigo-200 text-xs uppercase tracking-wider mb-1">Age / Gender</p>
-            <p className="font-medium text-base">{voterDetails.age} / {voterDetails.gender}</p>
-          </div>
-          <div>
-            <p className="text-indigo-200 text-xs uppercase tracking-wider mb-1">Assembly Constituency</p>
-            <p className="font-medium text-base">{voterDetails.constituency}</p>
-          </div>
-          <div className="col-span-2 bg-white/10 p-3 rounded-xl border border-white/10">
-            <p className="text-indigo-200 text-xs uppercase tracking-wider mb-1">Part / Serial No.</p>
-            <p className="font-mono font-bold text-base">{voterDetails.partNo} / {voterDetails.serialNo}</p>
+          
+          <div className="flex-1 grid grid-cols-2 gap-y-6 gap-x-4 text-sm w-full">
+            <div>
+              <p className="text-indigo-200 text-xs uppercase tracking-wider mb-1">Elector Name</p>
+              <p className="font-bold text-lg">{voterDetails.name}</p>
+            </div>
+            <div>
+              <p className="text-indigo-200 text-xs uppercase tracking-wider mb-1">EPIC No.</p>
+              <p className="font-mono font-bold text-lg bg-black/20 inline-block px-3 py-1 rounded-lg border border-white/10">{voterDetails.epicNo}</p>
+            </div>
+            <div>
+              <p className="text-indigo-200 text-xs uppercase tracking-wider mb-1">Age / Gender</p>
+              <p className="font-medium text-base">{voterDetails.age} / {voterDetails.gender}</p>
+            </div>
+            <div>
+              <p className="text-indigo-200 text-xs uppercase tracking-wider mb-1">State</p>
+              <p className="font-medium text-base">{voterDetails.state}</p>
+            </div>
+            <div className="col-span-2 bg-white/10 p-3 rounded-xl border border-white/10">
+              <p className="text-indigo-200 text-xs uppercase tracking-wider mb-1">Assembly Constituency</p>
+              <p className="font-bold text-base">{voterDetails.constituency}</p>
+            </div>
           </div>
         </div>
-      </div>
-    </motion.div>
+      </motion.div>
+      <p className="text-xs text-gray-500 dark:text-gray-400 text-center flex justify-center items-center gap-1.5 px-4">
+        <ShieldAlert size={14} className="shrink-0" />
+        This is a simulated profile generated for educational purposes and does not represent official government data.
+      </p>
+    </div>
   );
 
   return (
@@ -166,33 +184,48 @@ export default function Dashboard() {
       <AnimatePresence mode="wait">
         {activeTab === 'overview' && (
           <motion.div key="overview" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            {/* Success Banner */}
+            <div className="col-span-1 lg:col-span-3">
+              <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800/50 p-4 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
+                <div className="flex items-center gap-3">
+                  <div className="bg-green-100 dark:bg-green-800 p-2 rounded-full text-green-600 dark:text-green-300">
+                    <CheckCircle2 size={24} />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-green-800 dark:text-green-300">Profile created successfully!</h4>
+                    <p className="text-sm text-green-700 dark:text-green-400">Next Step: Verify your polling booth on the official website below.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {/* Left Column - ID and Stats */}
             <div className="lg:col-span-2 space-y-8">
               {renderDigitalID()}
               
               <div className="bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-xl border border-gray-100 dark:border-gray-700 relative overflow-hidden">
-                <div className="absolute top-0 right-0 p-8 opacity-10">
-                  <MapPin size={100} />
+                <div className="absolute top-0 right-0 p-8 opacity-5">
+                  <MapPin size={120} />
                 </div>
                 <div className="flex items-center gap-3 mb-6 relative z-10">
                   <div className="p-3 bg-indigo-100 dark:bg-indigo-900/50 rounded-xl text-indigo-600 dark:text-indigo-400">
                     <MapPin size={24} />
                   </div>
-                  <h2 className="text-2xl font-bold dark:text-white">Your Polling Station</h2>
+                  <h2 className="text-2xl font-bold dark:text-white">Find Your Official Polling Booth</h2>
                 </div>
-                <div className="bg-gray-50 dark:bg-slate-900/50 p-6 rounded-2xl border border-gray-200 dark:border-gray-700 relative z-10">
-                  <h3 className="font-bold text-xl dark:text-white mb-2">Government Senior Secondary School</h3>
-                  <p className="text-gray-600 dark:text-gray-400 mb-6 font-medium">Sector 14, Main Road, New Delhi</p>
-                  <div className="flex flex-wrap gap-4">
-                    <div className="bg-white dark:bg-slate-800 px-5 py-3 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 text-sm flex-1">
-                      <span className="text-gray-500 dark:text-gray-400 block text-xs uppercase mb-1 font-bold">Room No.</span>
-                      <span className="font-bold text-lg dark:text-white">4</span>
-                    </div>
-                    <div className="bg-white dark:bg-slate-800 px-5 py-3 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 text-sm flex-1">
-                      <span className="text-gray-500 dark:text-gray-400 block text-xs uppercase mb-1 font-bold">Booth Level Officer</span>
-                      <span className="font-bold text-lg dark:text-white">Mr. Sharma</span>
-                    </div>
-                  </div>
+                <div className="relative z-10">
+                  <p className="text-gray-600 dark:text-gray-400 mb-8 font-medium leading-relaxed max-w-lg">
+                    For accurate, secure, and up-to-date polling station details, please verify your EPIC number directly through the official Election Commission portal.
+                  </p>
+                  <a 
+                    href="https://electoralsearch.eci.gov.in" 
+                    target="_blank" 
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-4 rounded-xl font-bold transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5"
+                  >
+                    Find My Booth <ExternalLink size={18} />
+                  </a>
                 </div>
               </div>
             </div>
@@ -246,13 +279,15 @@ export default function Dashboard() {
                       <div className="bg-gradient-to-r from-purple-500 to-pink-500 h-3 rounded-full shadow-inner" style={{ width: '85%' }}></div>
                     </div>
                   </div>
-                  
-                  <div className="mt-6 p-4 bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-100 dark:border-indigo-800/50 rounded-xl">
-                    <p className="text-sm text-indigo-800 dark:text-indigo-300 font-medium">
-                      <strong>Next Step:</strong> You are fully prepared to vote! Locate your booth early on election day.
-                    </p>
-                  </div>
                 </div>
+              </div>
+            </div>
+            
+            {/* Privacy Notice Footer */}
+            <div className="col-span-1 lg:col-span-3 mt-4">
+              <div className="flex items-center justify-center gap-3 text-sm text-gray-500 dark:text-gray-400 bg-white dark:bg-slate-800 py-4 px-6 rounded-2xl mx-auto text-center border border-gray-100 dark:border-gray-700 shadow-sm">
+                <Shield size={20} className="text-indigo-500 shrink-0" />
+                <span><strong>Data Privacy Notice:</strong> We do not access or store real voter data. Users are strictly guided to official sources for verification.</span>
               </div>
             </div>
           </motion.div>
