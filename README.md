@@ -25,7 +25,7 @@ graph TD
     User([Voter / Citizen])
     
     %% Main Application Layer
-    subgraph Web App [VoteAssist React App]
+    subgraph WebApp [VoteAssist React App]
         Nav[Navbar & Routing]
         Lang[Language Context EN/HI]
         
@@ -49,7 +49,7 @@ graph TD
     end
     
     %% Firebase Layer
-    subgraph Backend Services [Firebase]
+    subgraph BackendServices [Firebase]
         Auth[Firebase Auth]
         DB[(Firestore)]
         Msg[Firebase Messaging]
@@ -64,7 +64,7 @@ graph TD
     Features -.->|Client-side Data| DB
     Features -.->|User Authentication| Auth
     
-    Web App ==>|Deployed via| Docker
+    WebApp ==>|Deployed via| Docker
     Docker ==>|Hosted on| CloudRun
     
     %% Styling
@@ -73,7 +73,7 @@ graph TD
     classDef accent fill:#8B5CF6,stroke:#fff,stroke-width:2px,color:#fff;
     
     class User primary;
-    class Web App secondary;
+    class WebApp secondary;
     class Infrastructure accent;
 ```
 
