@@ -17,7 +17,8 @@ export default function VoterRegistration() {
     setResult(null);
     
     try {
-      const response = await fetch('http://localhost:8080/api/eligibility', {
+      const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
+      const response = await fetch(`${apiUrl}/eligibility`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ age: parseInt(age, 10), isCitizen })
