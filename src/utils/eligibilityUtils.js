@@ -13,10 +13,12 @@ export const checkEligibilityStatus = (age, isCitizen) => {
   }
   
   const floorAge = Math.floor(age);
-  if (floorAge < 18) {
+  if (isNaN(floorAge) || floorAge < 18) {
+    const effectiveAge = isNaN(floorAge) ? 0 : Math.max(0, floorAge);
+    const waitTime = 18 - effectiveAge;
     return {
       isEligible: false,
-      nextStep: `You must be 18 years old. Please wait ${18 - floorAge} more year(s) to register.`
+      nextStep: `You must be 18 years old. Please wait ${waitTime} more year(s) to register.`
     };
   }
 

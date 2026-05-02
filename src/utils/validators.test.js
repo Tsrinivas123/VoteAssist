@@ -30,6 +30,15 @@ describe('validateEpicFormat', () => {
     expect(validateEpicFormat('1231234567')).toBe(false);
     expect(validateEpicFormat('AB-1234567')).toBe(false);
   });
+
+  it('should return false for EPIC with leading/trailing spaces (needs sanitization first)', () => {
+    expect(validateEpicFormat(' ABC1234567 ')).toBe(false);
+    expect(validateEpicFormat('ABC 1234567')).toBe(false);
+  });
+
+  it('should return false for extremely long strings', () => {
+    expect(validateEpicFormat('ABC1234567'.repeat(10))).toBe(false);
+  });
 });
 
 describe('sanitizeInput', () => {

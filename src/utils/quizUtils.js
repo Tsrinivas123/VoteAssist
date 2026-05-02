@@ -6,7 +6,10 @@
  * @returns {number} The new score
  */
 export const calculateQuizScore = (currentScore, isCorrect, pointsPerQuestion = 10) => {
-  if (currentScore < 0) currentScore = 0;
-  if (!isCorrect) return currentScore;
-  return currentScore + pointsPerQuestion;
+  let score = typeof currentScore === 'number' ? currentScore : 0;
+  let points = typeof pointsPerQuestion === 'number' ? pointsPerQuestion : 10;
+  
+  if (score < 0) score = 0;
+  if (!isCorrect) return score;
+  return score + points;
 };

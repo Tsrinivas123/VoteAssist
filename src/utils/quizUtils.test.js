@@ -21,4 +21,18 @@ describe('calculateQuizScore', () => {
     expect(calculateQuizScore(-5, true)).toBe(10);
     expect(calculateQuizScore(-5, false)).toBe(0);
   });
+
+  it('should handle non-numeric currentScore by defaulting to 0', () => {
+    expect(calculateQuizScore("invalid", true)).toBe(10);
+    expect(calculateQuizScore("invalid", false)).toBe(0);
+  });
+
+  it('should handle non-numeric pointsPerQuestion by defaulting to 10', () => {
+    expect(calculateQuizScore(0, true, "invalid")).toBe(10);
+  });
+
+  it('should return the same score if isCorrect is undefined or null', () => {
+    expect(calculateQuizScore(50, null)).toBe(50);
+    expect(calculateQuizScore(50, undefined)).toBe(50);
+  });
 });
