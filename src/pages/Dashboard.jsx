@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { CheckCircle2, Trophy, CreditCard, Calendar, MapPin, User, FileText, Clock, Shield, ExternalLink, ShieldAlert, Loader2 } from 'lucide-react';
-import { validateEpicFormat } from '../utils/validators';
+import { validateEpicFormat, sanitizeInput } from '../utils/validators';
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState('overview');
@@ -43,7 +43,16 @@ export default function Dashboard() {
     if (!validateForm()) return;
     
     setIsSubmitting(true);
+    
+    // Sanitize data before "saving" (simulated)
+    const sanitizedData = {
+      ...voterDetails,
+      name: sanitizeInput(voterDetails.name),
+      epicNo: sanitizeInput(voterDetails.epicNo)
+    };
+    
     setTimeout(() => {
+      setVoterDetails(sanitizedData);
       setHasSetupProfile(true);
       setReadinessScore(33);
       setNextStep({ title: "Verify Polling Booth", link: "https://electoralsearch.eci.gov.in", desc: "Find your exact booth location" });

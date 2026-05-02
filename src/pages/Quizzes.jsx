@@ -53,6 +53,7 @@ export default function Quizzes() {
           <button 
             onClick={() => {setCurrentQ(0); setScore(0); setShowResult(false); setSelectedOpt(null);}}
             className="px-8 py-3 bg-indigo-600 text-white rounded-xl font-medium hover:bg-indigo-700 transition-colors"
+            aria-label="Restart Quiz"
           >
             Try Again
           </button>
@@ -96,6 +97,7 @@ export default function Quizzes() {
                 onClick={() => handleOption(idx)}
                 disabled={selectedOpt !== null}
                 className={btnClass}
+                aria-label={`Option ${idx + 1}: ${opt}`}
               >
                 {opt}
               </button>

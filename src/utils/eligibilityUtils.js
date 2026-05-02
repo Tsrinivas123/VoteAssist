@@ -12,10 +12,11 @@ export const checkEligibilityStatus = (age, isCitizen) => {
     };
   }
   
-  if (age < 18) {
+  const floorAge = Math.floor(age);
+  if (floorAge < 18) {
     return {
       isEligible: false,
-      nextStep: `You must be 18 years old. Please wait ${18 - age} more year(s) to register.`
+      nextStep: `You must be 18 years old. Please wait ${18 - floorAge} more year(s) to register.`
     };
   }
 

@@ -1,96 +1,163 @@
 # 🗳️ VoteAssist: AI-Powered Election Assistant
 
-VoteAssist is a production-ready, secure, and highly interactive educational platform designed to empower Indian citizens. It simplifies the electoral process through gamification, AI assistance, and rigorous data validation, helping users navigate registration, verification, and voting with 100% data privacy.
+VoteAssist is a modern, gamified, and highly interactive web application designed to help Indian citizens navigate the electoral process with confidence. It serves as a comprehensive guide for voter registration, polling booth location, and understanding the voting process, all while combating misinformation.
 
 ---
 
-## 💎 Production-Grade Features
+## 🌟 Key Features
 
-- **🛡️ Secure EPIC Validation**: Robust client-side validation logic using advanced regex patterns (`^[A-Z]{3}[0-9]{7}$`) to guide users towards official verification sources without storing PII.
-- **📊 Dynamic Readiness Score**: A real-time 0–100% calculation metric on the Citizen Dashboard that guides users through essential next steps based on their current status.
-- **🤖 Context-Aware AI Chatbot**: An intelligent assistant with dedicated quick-replies ("Am I eligible?", "Find my booth") and deep-link awareness to guide users through FAQs.
-- **🗳️ Interactive EVM Simulation**: A realistic 5-step interactive simulator of the Indian voting process, featuring candidate selection, VVPAT printing animations, and indelible ink verification.
-- **📱 Privacy-First Dashboard**: Users generate a "Digital Voter Profile (Demo)" with strict inline validation (Age 18+, mandatory fields) and clear demo-only labeling.
-- **🔗 Official Redirection**: Direct deep-linking to the [Official ECI Portal](https://electoralsearch.eci.gov.in) for real polling booth verification and voter search.
-
----
-
-## 🏗️ Architecture & Technical Excellence
-
-### 💻 Technology Stack
-- **Frontend**: React 19 + Vite + Tailwind CSS v4
-- **State Management**: React Context (Language, Theme)
-- **Animations**: Framer Motion (Optimized for 60FPS)
-- **Validation**: Zod (Backend) & Custom Validators (Frontend)
-- **Testing**: Vitest (Frontend) & Jest (Backend)
-- **BaaS / Infra**: Node.js + Express + Google Cloud Run (Dockerized)
+- **Smart Eligibility Checker**: API-powered form that dynamically calculates voting eligibility based on user age and citizenship, providing instant next-step recommendations.
+- **Personalized Citizen Dashboard**: A dynamic portal where users generate their own digital Elector's Photo Identity Card (EPIC) by inputting their details, alongside real-time application tracking and gamified "Readiness Scores."
+- **Enhanced EVM Voting Simulation**: A highly realistic 5-step interactive simulation of the Indian voting process, featuring ID verification, indelible ink application, working candidate buttons, and VVPAT printing animations.
+- **Context-Aware AI Chatbot**: An intelligent floating assistant equipped with quick-reply suggestions, auto-scrolling, and intelligent keyword matching to guide users through registration and voting FAQs.
+- **Gamified Learning (Masterclass)**: Engage with highly interactive, animated flashcards and quizzes to learn about the Indian Constitution.
+- **Indian Electoral Timeline**: Explore a beautiful historical timeline documenting the journey of the world's largest democracy.
+- **Multilingual Support**: Seamlessly switch between English and Hindi for maximum accessibility.
+- **Fake News Shield**: Educational module teaching citizens how to spot and verify misinformation circulating on WhatsApp and social media.
 
 ---
 
-## 🧪 Testing & Code Quality
+## 🏗️ Architecture & Flow Diagram
 
-VoteAssist is built with a test-driven mindset to ensure 100% reliability of core electoral logic.
+The application is built on a modern React SPA architecture with a responsive, glassmorphism UI powered by Tailwind CSS v4.
 
-### 1. Frontend Unit Tests (Vitest)
-Tests core utilities in `src/utils/`:
-- **EPIC Validation**: 5+ test cases for various formats.
-- **Eligibility Logic**: Boundary testing for age (17 vs 18) and citizenship.
-- **Quiz Scoring**: Verification of point calculation logic.
-```bash
-npx vitest run
+```mermaid
+graph TD
+    User([Voter / Citizen])
+    
+    %% Main Application Layer
+    subgraph WebApp [VoteAssist React App]
+        Nav[Navbar & Routing]
+        Lang[Language Context EN/HI]
+        
+        %% Features
+        subgraph Features
+            Dash[Citizen Dashboard]
+            Reg[Voter Registration Guide]
+            Sim[EVM Simulation]
+            Booth[Polling Booth Finder]
+            Learn[Flashcards & Quizzes]
+            Fake[Fake News Awareness]
+        end
+        
+        Bot[AI Chatbot Assistant]
+    end
+    
+    %% Cloud & Infrastructure Layer
+    subgraph Infrastructure [Google Cloud Platform]
+        CloudRun[GCP Cloud Run]
+        Docker[Docker Container / Nginx]
+    end
+    
+    %% Firebase Layer
+    subgraph BackendServices [Firebase]
+        Auth[Firebase Auth]
+        DB[(Firestore)]
+        Msg[Firebase Messaging]
+    end
+
+    %% Connections
+    User <-->|Interacts| Nav
+    Nav --> Lang
+    Nav --> Features
+    User <-->|Asks Questions| Bot
+    
+    Features -.->|Client-side Data| DB
+    Features -.->|User Authentication| Auth
+    
+    WebApp ==>|Deployed via| Docker
+    Docker ==>|Hosted on| CloudRun
+    
+    %% Styling
+    classDef primary fill:#4F46E5,stroke:#fff,stroke-width:2px,color:#fff;
+    classDef secondary fill:#06B6D4,stroke:#fff,stroke-width:2px,color:#fff;
+    classDef accent fill:#8B5CF6,stroke:#fff,stroke-width:2px,color:#fff;
+    
+    class User primary;
+    class WebApp secondary;
+    class Infrastructure accent;
 ```
 
-### 2. Backend Unit Tests (Jest)
-Tests the secure eligibility API endpoints:
-```bash
-cd backend && npm test
-```
+---
 
-### 3. Linting & Accessibility
-- **ESLint**: Zero-warning codebase with optimized imports and variable usage.
-- **A11y**: Full ARIA support (`aria-invalid`, `aria-live`, `aria-describedby`) for screen readers and keyboard navigation.
+## 💻 Technology Stack
+
+- **Frontend Framework**: React 19 + Vite
+- **Styling**: Tailwind CSS v4 (with custom glassmorphism variants)
+- **Animations**: Framer Motion
+- **Icons**: Lucide React
+- **Routing**: React Router DOM v7
+- **Backend / BaaS**: Firebase (Firestore, Auth, Messaging)
+- **Deployment & Hosting**: Google Cloud Run + Docker + Nginx
 
 ---
 
-## 🚀 Installation & Local Setup
+## 🚀 Local Setup Instructions
 
-1. **Clone & Install:**
+1. **Clone the repository:**
    ```bash
    git clone https://github.com/Tsrinivas123/VoteAssist.git
    cd VoteAssist
+   ```
+
+2. **Install dependencies:**
+   ```bash
    npm install
    ```
 
-2. **Environment Configuration:**
-   Create a `.env` file in the root directory (refer to `.env.example`):
-   ```env
-   VITE_ECI_PORTAL_URL=https://electoralsearch.eci.gov.in
-   PORT=8080
-   ```
+3. **Configure Firebase:**
+   Open `src/firebase.js` and replace the placeholder configuration with your active Firebase project credentials.
 
-3. **Start Development:**
+4. **Start the development server:**
    ```bash
-   # Run Frontend
    npm run dev
-
-   # Run Backend
-   cd backend && npm install && node src/index.js
    ```
+   The application will be available at `http://localhost:5173`.
 
 ---
 
-## ☁️ Cloud Deployment (GCP)
+## ☁️ Deployment (Google Cloud Run)
 
-This project is fully containerized and ready for Google Cloud Run (Port 8080).
+This repository includes a multi-stage `Dockerfile` and an `nginx.conf` designed for Cloud Run. 
 
+To deploy directly to your Google Cloud Project:
 ```bash
-# Deploy to Cloud Run
-gcloud run deploy vote-assist --source . --allow-unauthenticated
+# Authenticate
+gcloud auth login
+gcloud config set project YOUR_PROJECT_ID
+
+# Deploy
+gcloud run deploy vote-assist \
+  --source . \
+  --region us-central1 \
+  --allow-unauthenticated
 ```
 
-### 🌐 Live Portal
-- **Citizen Portal**: [https://vote-assist-143983638275.asia-south1.run.app](https://vote-assist-143983638275.asia-south1.run.app)
-- **Validation API**: [https://backend-vote-assist-143983638275.asia-south1.run.app/api/eligibility](https://backend-vote-assist-143983638275.asia-south1.run.app/api/eligibility)
-
 ---
-*Disclaimer: This is a demo system intended for educational purposes. All real voter data verification must be performed on the official Election Commission of India portals.*
+
+## 🔧 Secure Node.js Backend
+
+A newly added secure backend powered by Node.js, Express, and Zod handles API routing and logic.
+
+### Local Backend Setup
+
+1. Navigate to the backend directory:
+   ```bash
+   cd backend
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Run the Jest unit test suite:
+   ```bash
+   npm test
+   ```
+4. Start the server (runs on `http://localhost:8080`):
+   ```bash
+   node src/index.js
+   ```
+
+### 🌐 Live URLs
+- **Frontend (Citizen Portal)**: [https://vote-assist-143983638275.asia-south1.run.app](https://vote-assist-143983638275.asia-south1.run.app)
+- **Backend (Secure API)**: [https://backend-vote-assist-143983638275.asia-south1.run.app/api/eligibility](https://backend-vote-assist-143983638275.asia-south1.run.app/api/eligibility)

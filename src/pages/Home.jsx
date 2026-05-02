@@ -39,10 +39,10 @@ export default function Home() {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/dashboard" className="px-8 py-4 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold text-lg hover:shadow-lg hover:shadow-indigo-500/30 transition-all flex items-center justify-center gap-2 transform hover:-translate-y-1">
+            <Link to="/dashboard" aria-label="Get Started with Voter Registration" className="px-8 py-4 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold text-lg hover:shadow-lg hover:shadow-indigo-500/30 transition-all flex items-center justify-center gap-2 transform hover:-translate-y-1">
               {t('getStarted')} <ArrowRight size={20} />
             </Link>
-            <Link to="/simulation" className="px-8 py-4 rounded-xl glassmorphism dark:glassmorphism-dark font-bold text-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-all flex items-center justify-center gap-2 transform hover:-translate-y-1">
+            <Link to="/simulation" aria-label="Try Virtual EVM Simulation" className="px-8 py-4 rounded-xl glassmorphism dark:glassmorphism-dark font-bold text-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-all flex items-center justify-center gap-2 transform hover:-translate-y-1">
               Try EVM Simulation
             </Link>
           </div>
