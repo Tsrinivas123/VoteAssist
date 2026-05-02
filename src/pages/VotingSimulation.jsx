@@ -1,12 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Fingerprint, CheckCircle2, AlertCircle, ShieldCheck } from 'lucide-react';
+import { validateEpicFormat } from '../utils/validators';
 
 export default function VotingSimulation() {
   const [step, setStep] = useState('auth'); // auth, verified, voting, printing, voted
   const [epicNumber, setEpicNumber] = useState('');
   const [selectedCandidate, setSelectedCandidate] = useState(null);
   const [isVerifying, setIsVerifying] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
   const candidates = [
     { id: 1, name: "Arjun Singh", party: "Development Party", symbol: "🌟" },
@@ -18,6 +20,12 @@ export default function VotingSimulation() {
   const handleVerify = (e) => {
     e.preventDefault();
     if (!epicNumber) return;
+    
+    if (!validateEpicFormat(epicNumber)) {
+      setErrorMsg('Invalid format. Use 3 letters and 7 digits (e.g., ABC1234567)');
+      return;
+    }
+    setErrorMsg('');
     setIsVerifying(true);
     setTimeout(() => {
       setIsVerifying(false);
@@ -80,9 +88,10 @@ export default function VotingSimulation() {
                     type="text" 
                     placeholder="e.g. ABC1234567" 
                     value={epicNumber}
-                    onChange={(e) => setEpicNumber(e.target.value.toUpperCase())}
+                    onChange={(e) => { setEpicNumber(e.target.value.toUpperCase()); setErrorMsg(''); }}
                     className="w-full px-5 py-4 bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-gray-600 rounded-xl font-mono text-center text-xl tracking-widest uppercase focus:ring-2 focus:ring-indigo-500 outline-none dark:text-white"
                   />
+                  {errorMsg && <p className="text-red-500 text-sm font-bold text-center">{errorMsg}</p>}
                   <button 
                     type="submit" 
                     disabled={!epicNumber || isVerifying}

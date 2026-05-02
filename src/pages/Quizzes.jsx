@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Trophy, ArrowRight } from 'lucide-react';
+import { Trophy } from 'lucide-react';
+import { calculateQuizScore } from '../utils/quizUtils';
 
 const questions = [
   {
@@ -25,9 +26,8 @@ export default function Quizzes() {
     if (selectedOpt !== null) return;
     setSelectedOpt(idx);
     
-    if (idx === questions[currentQ].a) {
-      setScore(score + 10);
-    }
+    const isCorrect = idx === questions[currentQ].a;
+    setScore(prevScore => calculateQuizScore(prevScore, isCorrect, 10));
     
     setTimeout(() => {
       if (currentQ < questions.length - 1) {

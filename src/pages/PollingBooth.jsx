@@ -1,17 +1,12 @@
 import { useState } from 'react';
-import { Search, MapPin, ShieldAlert, CheckCircle2, AlertCircle, ExternalLink, ShieldCheck } from 'lucide-react';
+import { ShieldAlert, CheckCircle2, AlertCircle, ExternalLink, ShieldCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { validateEpicFormat } from '../utils/validators';
 
 export default function PollingBooth() {
   const [epicNo, setEpicNo] = useState('');
   const [status, setStatus] = useState('idle'); // idle, validating, valid, invalid
   const [errorMsg, setErrorMsg] = useState('');
-
-  // Reusable validation function for standard Indian EPIC format (e.g., ABC1234567)
-  const validateEpicFormat = (epic) => {
-    const epicRegex = /^[A-Z]{3}[0-9]{7}$/;
-    return epicRegex.test(epic);
-  };
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -135,9 +130,14 @@ export default function PollingBooth() {
       )}
 
       {/* Persistent Trust Footer */}
-      <div className="flex items-center justify-center gap-2 text-sm text-gray-500 dark:text-gray-400 mt-12 bg-white/50 dark:bg-slate-800/50 py-4 px-6 rounded-full inline-flex mx-auto">
-        <ShieldCheck size={16} className="text-green-500" />
-        <span>We adhere to strict data privacy guidelines. No EPIC data is saved on our servers.</span>
+      <div className="flex flex-col items-center justify-center gap-2 text-sm text-gray-500 dark:text-gray-400 mt-12 bg-white/50 dark:bg-slate-800/50 py-4 px-6 rounded-3xl mx-auto">
+        <div className="flex items-center gap-2">
+          <ShieldCheck size={16} className="text-green-500" />
+          <span>We adhere to strict data privacy guidelines. No EPIC data is saved on our servers.</span>
+        </div>
+        <p className="font-bold text-xs mt-1 border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 px-3 py-1 rounded-full">
+          Disclaimer: This is a demo system. Real data is verified via official ECI sources.
+        </p>
       </div>
     </div>
   );

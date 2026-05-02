@@ -10,7 +10,7 @@ export default function Chatbot() {
   const [input, setInput] = useState("");
   const messagesEndRef = useRef(null);
 
-  const quickReplies = ["Am I eligible?", "How to register?", "Where is my booth?", "How to use EVM?"];
+  const quickReplies = ["Am I eligible?", "How to register?", "Find my booth"];
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -32,14 +32,16 @@ export default function Chatbot() {
       
       if (lowerInput.includes("register") || lowerInput.includes("form 6")) {
         responseText = "To register to vote, you need to fill out Form 6. You can do this online on the Voter Service Portal or submit a physical copy to your local Electoral Registration Officer. Check the 'Registration' tab for a step-by-step guide!";
-      } else if (lowerInput.includes("age") || lowerInput.includes("eligible") || lowerInput.includes("eligibility")) {
+      } else if (lowerInput.includes("am i eligible") || lowerInput.includes("age") || lowerInput.includes("eligible") || lowerInput.includes("eligibility")) {
         responseText = "To be eligible to vote in India, you must be an Indian citizen and at least 18 years old on January 1st of the year the electoral roll is revised. You can use our Eligibility Checker in the Registration tab!";
-      } else if (lowerInput.includes("evm") || lowerInput.includes("machine") || lowerInput.includes("how to vote") || lowerInput.includes("simulation")) {
+      } else if (lowerInput.includes("evm") || lowerInput.includes("machine") || lowerInput.includes("how to vote") || lowerInput.includes("how to use evm") || lowerInput.includes("simulation")) {
         responseText = "When you vote, you'll use an EVM (Electronic Voting Machine). You simply press the blue button next to the candidate of your choice. A red light will blink and you'll hear a beep confirming your vote. Try our 'Simulation' tab to practice!";
-      } else if (lowerInput.includes("booth") || lowerInput.includes("where") || lowerInput.includes("location") || lowerInput.includes("epic")) {
-        responseText = "You can find your exact polling booth by entering your EPIC (Voter ID) number in our 'Booth Finder' section. It will show you the exact room and officer details.";
+      } else if (lowerInput.includes("booth") || lowerInput.includes("where") || lowerInput.includes("where is my booth") || lowerInput.includes("location") || lowerInput.includes("epic")) {
+        responseText = "You can find your exact polling booth by entering your EPIC (Voter ID) number in our 'Booth Finder' section. It will show you the exact room and officer details. Remember, we guide you to official sources for security!";
       } else if (lowerInput.includes("fake") || lowerInput.includes("news") || lowerInput.includes("whatsapp")) {
         responseText = "Fake news spreads quickly during elections. Always verify sensational headlines with official sources or fact-checking websites like AltNews before forwarding them on WhatsApp. Check our 'Fake News' tab for tips!";
+      } else if (lowerInput.includes("score") || lowerInput.includes("dashboard") || lowerInput.includes("readiness")) {
+        responseText = "Your Voter Readiness Score helps you track how prepared you are for election day! It increases as you complete your profile, verify your booth, and take the Masterclass quiz.";
       } else if (lowerInput.includes("hello") || lowerInput.includes("hi") || lowerInput.includes("hey")) {
         responseText = "Hello there! I'm here to help you navigate the Indian election process. Ask me about registration, voting, or booth locations!";
       }

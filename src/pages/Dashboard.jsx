@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { CheckCircle2, Trophy, CreditCard, Calendar, MapPin, User, FileText, Clock, Shield, ExternalLink, ShieldAlert } from 'lucide-react';
+import { CheckCircle2, Trophy, CreditCard, Calendar, MapPin, User, FileText, Clock, Shield, ExternalLink, ShieldAlert, Loader2 } from 'lucide-react';
+import { validateEpicFormat } from '../utils/validators';
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState('overview');
@@ -18,11 +19,36 @@ export default function Dashboard() {
     status: "Active"
   });
 
+  const [formErrors, setFormErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Calculate Voter Readiness Score based on what they've done
+  // (In a real app, this would be fetched from DB and based on their exact actions)
+  const [readinessScore, setReadinessScore] = useState(0);
+  const [nextStep, setNextStep] = useState({ title: "Setup Profile", link: "#", desc: "Generate your digital voter profile" });
+
+  const validateForm = () => {
+    const errors = {};
+    if (!voterDetails.name.trim() || voterDetails.name.length < 3) errors.name = "Name must be at least 3 characters.";
+    if (!voterDetails.epicNo || !validateEpicFormat(voterDetails.epicNo)) errors.epicNo = "Invalid format. Use 3 letters and 7 digits (e.g., ABC1234567).";
+    if (!voterDetails.age || parseInt(voterDetails.age) < 18) errors.age = "You must be at least 18 years old to register.";
+    if (!voterDetails.state.trim()) errors.state = "State is required.";
+    if (!voterDetails.constituency.trim()) errors.constituency = "Constituency is required.";
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   const handleProfileSetup = (e) => {
     e.preventDefault();
-    if(voterDetails.name && voterDetails.epicNo && voterDetails.age && voterDetails.state && voterDetails.constituency) {
+    if (!validateForm()) return;
+    
+    setIsSubmitting(true);
+    setTimeout(() => {
       setHasSetupProfile(true);
-    }
+      setReadinessScore(33);
+      setNextStep({ title: "Verify Polling Booth", link: "https://electoralsearch.eci.gov.in", desc: "Find your exact booth location" });
+      setIsSubmitting(false);
+    }, 1500);
   };
 
   const upcomingElection = {
@@ -50,23 +76,26 @@ export default function Dashboard() {
           <h1 className="text-3xl font-extrabold mb-4 dark:text-white">Setup Your Profile</h1>
           <p className="text-gray-600 dark:text-gray-400 mb-8">Enter your details to generate your personalized digital voter dashboard. Your privacy is protected.</p>
           
-          <form onSubmit={handleProfileSetup} className="space-y-5 text-left">
+          <form onSubmit={handleProfileSetup} className="space-y-5 text-left" noValidate>
             <div>
-              <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Full Name</label>
-              <input required type="text" value={voterDetails.name} onChange={e => setVoterDetails({...voterDetails, name: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-slate-900 focus:ring-2 focus:ring-indigo-500 outline-none dark:text-white" placeholder="e.g. Rahul Sharma" />
+              <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2" htmlFor="name">Full Name</label>
+              <input id="name" required type="text" value={voterDetails.name} onChange={e => {setVoterDetails({...voterDetails, name: e.target.value}); setFormErrors({...formErrors, name: null})}} className={`w-full px-4 py-3 rounded-xl border ${formErrors.name ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'} bg-gray-50 dark:bg-slate-900 focus:ring-2 focus:ring-indigo-500 outline-none dark:text-white`} placeholder="e.g. Rahul Sharma" aria-invalid={!!formErrors.name} aria-describedby={formErrors.name ? "name-error" : undefined} />
+              {formErrors.name && <p id="name-error" className="text-red-500 text-xs font-bold mt-1" aria-live="polite">{formErrors.name}</p>}
             </div>
             <div>
-              <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">EPIC Number (Voter ID)</label>
-              <input required type="text" value={voterDetails.epicNo} onChange={e => setVoterDetails({...voterDetails, epicNo: e.target.value.toUpperCase()})} className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-slate-900 focus:ring-2 focus:ring-indigo-500 outline-none dark:text-white uppercase" placeholder="e.g. ABC1234567" />
+              <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2" htmlFor="epicNo">EPIC Number (Voter ID)</label>
+              <input id="epicNo" required type="text" value={voterDetails.epicNo} onChange={e => {setVoterDetails({...voterDetails, epicNo: e.target.value.toUpperCase()}); setFormErrors({...formErrors, epicNo: null})}} className={`w-full px-4 py-3 rounded-xl border ${formErrors.epicNo ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'} bg-gray-50 dark:bg-slate-900 focus:ring-2 focus:ring-indigo-500 outline-none dark:text-white uppercase font-mono tracking-widest`} placeholder="e.g. ABC1234567" aria-invalid={!!formErrors.epicNo} aria-describedby={formErrors.epicNo ? "epic-error" : undefined} />
+              {formErrors.epicNo && <p id="epic-error" className="text-red-500 text-xs font-bold mt-1" aria-live="polite">{formErrors.epicNo}</p>}
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Age</label>
-                <input required type="number" min="18" value={voterDetails.age} onChange={e => setVoterDetails({...voterDetails, age: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-slate-900 focus:ring-2 focus:ring-indigo-500 outline-none dark:text-white" placeholder="18+" />
+                <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2" htmlFor="age">Age</label>
+                <input id="age" required type="number" min="1" value={voterDetails.age} onChange={e => {setVoterDetails({...voterDetails, age: e.target.value}); setFormErrors({...formErrors, age: null})}} className={`w-full px-4 py-3 rounded-xl border ${formErrors.age ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'} bg-gray-50 dark:bg-slate-900 focus:ring-2 focus:ring-indigo-500 outline-none dark:text-white`} placeholder="18+" aria-invalid={!!formErrors.age} aria-describedby={formErrors.age ? "age-error" : undefined} />
+                {formErrors.age && <p id="age-error" className="text-red-500 text-xs font-bold mt-1" aria-live="polite">{formErrors.age}</p>}
               </div>
               <div>
-                <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Gender</label>
-                <select value={voterDetails.gender} onChange={e => setVoterDetails({...voterDetails, gender: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-slate-900 focus:ring-2 focus:ring-indigo-500 outline-none dark:text-white">
+                <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2" htmlFor="gender">Gender</label>
+                <select id="gender" value={voterDetails.gender} onChange={e => setVoterDetails({...voterDetails, gender: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-slate-900 focus:ring-2 focus:ring-indigo-500 outline-none dark:text-white">
                   <option>Male</option>
                   <option>Female</option>
                   <option>Other</option>
@@ -75,16 +104,18 @@ export default function Dashboard() {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">State</label>
-                <input required type="text" value={voterDetails.state} onChange={e => setVoterDetails({...voterDetails, state: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-slate-900 focus:ring-2 focus:ring-indigo-500 outline-none dark:text-white" placeholder="e.g. Delhi" />
+                <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2" htmlFor="state">State</label>
+                <input id="state" required type="text" value={voterDetails.state} onChange={e => {setVoterDetails({...voterDetails, state: e.target.value}); setFormErrors({...formErrors, state: null})}} className={`w-full px-4 py-3 rounded-xl border ${formErrors.state ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'} bg-gray-50 dark:bg-slate-900 focus:ring-2 focus:ring-indigo-500 outline-none dark:text-white`} placeholder="e.g. Delhi" aria-invalid={!!formErrors.state} aria-describedby={formErrors.state ? "state-error" : undefined} />
+                {formErrors.state && <p id="state-error" className="text-red-500 text-xs font-bold mt-1" aria-live="polite">{formErrors.state}</p>}
               </div>
               <div>
-                <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Constituency</label>
-                <input required type="text" value={voterDetails.constituency} onChange={e => setVoterDetails({...voterDetails, constituency: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-slate-900 focus:ring-2 focus:ring-indigo-500 outline-none dark:text-white" placeholder="e.g. New Delhi" />
+                <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2" htmlFor="const">Constituency</label>
+                <input id="const" required type="text" value={voterDetails.constituency} onChange={e => {setVoterDetails({...voterDetails, constituency: e.target.value}); setFormErrors({...formErrors, constituency: null})}} className={`w-full px-4 py-3 rounded-xl border ${formErrors.constituency ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'} bg-gray-50 dark:bg-slate-900 focus:ring-2 focus:ring-indigo-500 outline-none dark:text-white`} placeholder="e.g. New Delhi" aria-invalid={!!formErrors.constituency} aria-describedby={formErrors.constituency ? "const-error" : undefined} />
+                {formErrors.constituency && <p id="const-error" className="text-red-500 text-xs font-bold mt-1" aria-live="polite">{formErrors.constituency}</p>}
               </div>
             </div>
-            <button type="submit" className="w-full py-4 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 transition-all shadow-md mt-4">
-              Generate Digital Profile
+            <button type="submit" disabled={isSubmitting} className="w-full py-4 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 transition-all shadow-md mt-4 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed">
+              {isSubmitting ? <><Loader2 className="animate-spin" size={20} /> Generating Profile...</> : 'Generate Digital Profile'}
             </button>
             <div className="flex items-center justify-center gap-2 mt-4 text-xs text-gray-500 dark:text-gray-400">
               <ShieldAlert size={14} />
@@ -111,8 +142,11 @@ export default function Dashboard() {
               <CreditCard size={28} />
             </div>
             <div>
-              <h3 className="font-bold text-xl uppercase tracking-wider">Digital Voter Profile (Demo)</h3>
-              <p className="text-indigo-200 text-xs uppercase tracking-widest mt-1">Simulated Election Application</p>
+              <h3 className="font-bold text-xl uppercase tracking-wider flex items-center gap-2">
+                Digital Voter Profile 
+                <span className="bg-amber-500 text-amber-950 text-xs font-black px-2 py-0.5 rounded uppercase tracking-widest shadow-sm">Demo</span>
+              </h3>
+              <p className="text-indigo-200 text-xs uppercase tracking-widest mt-1">Simulated Educational Application</p>
             </div>
           </div>
           <div className="bg-green-500/20 px-4 py-1.5 rounded-full text-xs font-bold uppercase backdrop-blur-md border border-green-400/30 text-green-100 flex items-center gap-1.5">
@@ -250,34 +284,42 @@ export default function Dashboard() {
                   <p className="text-amber-100 text-sm uppercase tracking-widest font-bold">Days Remaining</p>
                 </div>
               </div>
-
               <div className="bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-xl border border-gray-100 dark:border-gray-700">
-                <h3 className="font-bold text-xl mb-6 dark:text-white flex items-center gap-3">
-                  <div className="p-2 bg-purple-100 dark:bg-purple-900/50 rounded-lg text-purple-600 dark:text-purple-400">
-                    <Trophy size={20} />
+                <h3 className="font-bold text-xl mb-6 dark:text-white flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-purple-100 dark:bg-purple-900/50 rounded-lg text-purple-600 dark:text-purple-400">
+                      <Trophy size={20} />
+                    </div>
+                    Voter Readiness
                   </div>
-                  Voter Readiness
+                  <span className="text-2xl font-black text-indigo-600 dark:text-indigo-400">{readinessScore}%</span>
                 </h3>
                 
                 <div className="space-y-6">
                   <div>
-                    <div className="flex justify-between text-sm mb-2">
-                      <span className="font-bold text-gray-700 dark:text-gray-300">Profile Completeness</span>
-                      <span className="font-black text-indigo-600 dark:text-indigo-400">100%</span>
-                    </div>
-                    <div className="w-full bg-gray-100 dark:bg-slate-700 rounded-full h-3">
-                      <div className="bg-gradient-to-r from-indigo-500 to-purple-500 h-3 rounded-full shadow-inner" style={{ width: '100%' }}></div>
+                    <div className="w-full bg-gray-100 dark:bg-slate-700 rounded-full h-4 shadow-inner">
+                      <motion.div 
+                        initial={{ width: 0 }}
+                        animate={{ width: `${readinessScore}%` }}
+                        transition={{ duration: 1, delay: 0.5 }}
+                        className="bg-gradient-to-r from-indigo-500 to-purple-500 h-4 rounded-full shadow-md"
+                      ></motion.div>
                     </div>
                   </div>
                   
-                  <div>
-                    <div className="flex justify-between text-sm mb-2">
-                      <span className="font-bold text-gray-700 dark:text-gray-300">Masterclass Quiz</span>
-                      <span className="font-black text-purple-600 dark:text-purple-400">850 / 1000</span>
-                    </div>
-                    <div className="w-full bg-gray-100 dark:bg-slate-700 rounded-full h-3">
-                      <div className="bg-gradient-to-r from-purple-500 to-pink-500 h-3 rounded-full shadow-inner" style={{ width: '85%' }}></div>
-                    </div>
+                  <div className="bg-indigo-50 dark:bg-indigo-900/20 rounded-2xl p-5 border border-indigo-100 dark:border-indigo-800/50">
+                    <p className="text-xs uppercase tracking-wider font-bold text-indigo-500 dark:text-indigo-400 mb-1">Recommended Next Step</p>
+                    <h4 className="font-bold text-lg text-gray-900 dark:text-white mb-2">{nextStep.title}</h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">{nextStep.desc}</p>
+                    {nextStep.link.startsWith('http') ? (
+                      <a href={nextStep.link} target="_blank" rel="noreferrer" className="text-sm font-bold text-indigo-600 dark:text-indigo-400 flex items-center gap-1 hover:underline">
+                        Complete Step <ExternalLink size={14} />
+                      </a>
+                    ) : (
+                      <Link to={nextStep.link} className="text-sm font-bold text-indigo-600 dark:text-indigo-400 flex items-center gap-1 hover:underline">
+                        Complete Step <ExternalLink size={14} />
+                      </Link>
+                    )}
                   </div>
                 </div>
               </div>

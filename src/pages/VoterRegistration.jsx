@@ -24,7 +24,7 @@ export default function VoterRegistration() {
       });
       const data = await response.json();
       setResult(data);
-    } catch (error) {
+    } catch {
       setResult({ isEligible: false, nextStep: "Error connecting to the server. Please ensure the backend is running." });
     } finally {
       setLoading(false);
